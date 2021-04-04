@@ -14,9 +14,8 @@ function preload(){
 function setup() {
   createCanvas(1000,400);
 
-  var d=new Date();
-  console.log(d.getHours())
-  feedTime=d.getHours()%12 || 12 + ":"+ d.getMinutes()
+  label=createElement('h4')
+  label.position(550,85)
 
   database=firebase.database();
   console.log("database connected")
@@ -27,9 +26,6 @@ function setup() {
   dog=createSprite(800,200,150,150);
   dog.addImage(sadDog);
   dog.scale=0.15;
-
-  label=createElement('h4',"last fed: "+feedTime)
-  label.position(550,85)
 
   feedBtn=createButton("Feed")
   feedBtn.position(700,100)
@@ -60,6 +56,10 @@ function getFoodStock(){
 
 //function to update food stock and last fed time
 function deductFood(){
+  var d=new Date();
+  console.log(d.getHours())
+  feedTime=d.getHours()%12 || 12 + ":"+ d.getMinutes()
+  label.html(feedTime,false)
   dog.addImage(happyDog)
   foodObj.foodStock-=1;
   database.ref('/').set({
